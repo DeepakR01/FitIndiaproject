@@ -1,0 +1,113 @@
+/* style.css */
+body {
+  font-family: sans-serif;
+  position:relative;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space logo and links */
+  align-items: center;
+  position: center;
+  padding: 1rem;
+  background-color: lightblue; /* Light mode background */
+  color: black; /* Light mode text */
+}
+
+.logo img {
+  transform: scale(3); /* Adjust size as needed */
+  height: 30px; /* Adjust as needed */
+  /* width: 150px; Adjust as needed */
+  margin-left: 5px;
+  padding-left: 15px;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black; /* Light mode link color */
+  padding: 10px; /* Add some padding around links *5
+  border-radius: 5px; /* Optional: Add rounded corners */
+  transition: color 0.3s ease; /* Smooth transition for link color */
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Example hover color */
+}
+
+
+.mode-toggle {
+  margin-left: 20px; /* Space from nav links */
+}
+
+.mode-toggle button {
+  padding: 8px 16px;
+  background-color: #007bff; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for button color */
+}
+
+.mode-toggle button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .nav-links {
+      position: relative;
+      top: 80px; /* Adjust as needed */
+      left: 0;
+      width: 100%;
+      background-color: #f0f0f0; /* Light mode background */
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-100%); /* Hide initially */
+      transition: transform 0.3s ease;
+      z-index: 100; /* Ensure it's above other content */
+  }
+
+  body.dark-mode .nav-links {
+      background-color: #222; /* Dark mode background */
+  }
+
+  .nav-links li {
+      margin: 10px 0;
+  }
+
+  .nav-links.active {
+      transform: translateY(0); /* Show when active */
+  }
+
+  .burger {
+      display: block;
+  }
+
+  .burger.toggle .line1 {
+      transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .burger.toggle .line2 {
+      opacity: 0;
+  }
+
+  .burger.toggle .line3 {
+      transform: rotate(-45deg) translate(5px, -5px);
+  }
+}

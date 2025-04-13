@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/stylenavbar.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img th:src="@{/css/cover.png}" alt="FitIndia Logo"> </a>
+
+        </div>
+        <ul class="nav-links">
+            <li><a href="http://localhost:8083/home">Home</a></li>
+            <li><a href="http://localhost:8083/caloriecalculator">Calculate Calories</a></li>
+            <li><a href="http://127.0.0.1:8081/">Image</a></li>
+            <li><a href="http://127.0.0.1:5000/">Image Calories</a></li>
+            <li><a href="http://127.0.0.1:5002/">Diet Plan</a></li>
+            <li><a href="http://127.0.0.1:5001/">Chatbot</a></li>
+            <li><a href="http://localhost:8083/dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+
+
+    <script th:src="@{css/js/script.js}"></script>
+<div class="container">
+    <h1 class="mt-4">Fitness Dashboard</h1>
+
+    <div class="form-container">
+        <form th:action="@{/add}" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="calories">Calories</label>
+                    <input type="number" class="form-control" id="calories" name="calories" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="fats">Fats (g)</label>
+                    <input type="number" class="form-control" id="fats" name="fats" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="carbs">Carbs (g)</label>
+                    <input type="number" class="form-control" id="carbs" name="carbs" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="protein">Protein (g)</label>
+                    <input type="number" class="form-control" id="protein" name="protein" required>
+                </div>
+            </div>
+            <button class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Calories</h5>
+                    <p class="card-text" th:text="${totalCalories}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Fats</h5>
+                    <p class="card-text" th:text="${totalFats}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Carbs</h5>
+                    <p class="card-text" th:text="${totalCarbs}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Protein</h5>
+                    <p class="card-text" th:text="${totalProtien}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="mt-4">
+        <h2>Search Calories</h2>
+        <form th:action="@{/search}" method="get">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="searchDate">Search by Date</label>
+                    <input type="date" class="form-control" id="searchDate" name="date">
+                </div>
+                <div class="form-group col-md-3">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Calories</th>
+                    <th>Fats</th>
+                    <th>Carbs</th>
+                    <th>Protein</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="calorie : ${caloriesList}">
+                    <td th:text="${calorie.date}"></td>
+                    <td th:text="${calorie.calories}"></td>
+                    <td th:text="${calorie.Fats}"></td>
+                    <td th:text="${calorie.carbs}"></td>
+                    <td th:text="${calorie.protein}"></td>
+                    <td>
+                        <a th:href="@{/delete/{id}(id=${calorie.id})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> -->
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mt-4">Fitness Dashboard</h1>
+
+    <div class="form-container">
+        <form th:action="@{/add}" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="calories">Calories</label>
+                    <input type="number" class="form-control" id="calories" name="calories" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="fats">Fats (g)</label>
+                    <input type="number" class="form-control" id="fats" name="fats" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="carbs">Carbs (g)</label>
+                    <input type="number" class="form-control" id="carbs" name="carbs" required>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="protein">Protein (g)</label>
+                    <input type="number" class="form-control" id="protein" name="protein" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Entry</button> 
+            <button class="btn btn-primary">Add</button>
+          <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Calories</h5>
+                    <p class="card-text" th:text="${totalCalories}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Fats</h5>
+                    <p class="card-text" th:text="${totalFats}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Carbs</h5>
+                    <p class="card-text" th:text="${totalCarbs}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Protein</h5>
+                    <p class="card-text" th:text="${totalProtien}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nutrition Dashboard</h1>
+
+        <div id="data-form" class="mb-3">
+            <div class="form-row">
+                <div class="col-md-3 mb-2">
+                    <input type="date" id="dateInput" class="form-control">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <input type="number" id="caloriesInput" class="form-control" placeholder="Calories">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <input type="number" id="proteinInput" class="form-control" placeholder="Protein (g)">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <input type="number" id="fatsInput" class="form-control" placeholder="Fats (g)">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <input type="number" id="fatsInput" class="form-control" placeholder="Carbs (g)">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button id="addButton" class="btn btn-primary">Add Entry</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Calories</th>
+                        <th>Protein (g)</th>
+                        <th>Fats (g)</th>
+                        <th>Carbs (g)</th>
+                    </tr>
+                </thead>
+                <tbody id="data-table-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        const dateInput = document.getElementById('dateInput');
+        const caloriesInput = document.getElementById('caloriesInput');
+        const proteinInput = document.getElementById('proteinInput');
+        const fatsInput = document.getElementById('fatsInput');
+        const carbsInput = document.getElementById('carbsInput');
+        const addButton = document.getElementById('addButton');
+        const tableBody = document.getElementById('data-table-body');
+
+        let data = [];
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.date}</td>
+                    <td>${item.calories}</td>
+                    <td>${item.protein}</td>
+                    <td>${item.fats}</td>
+                    <td>${item.carbs}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        addButton.addEventListener('click', () => {
+            const date = dateInput.value;
+            const calories = parseInt(caloriesInput.value);
+            const protein = parseInt(proteinInput.value);
+            const fats = parseInt(fatsInput.value);
+            const carbs = parseInt(carbsInput.value);
+
+            if (date && !isNaN(calories) && !isNaN(protein) && !isNaN(fats)) {
+                data.push({ date, calories, protein, fats });
+                renderTable();
+                dateInput.value = '';
+                caloriesInput.value = '';
+                proteinInput.value = '';
+                fatsInput.value = '';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+
+        renderTable();
+
+        async function fetchDataFromDatabase() {
+            try {
+                const response = await fetch('/api/nutrition');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                data = await response.json();
+                renderTable();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        async function sendDataToDatabase(newData) {
+          try{
+            const response = await fetch('/api/nutrition', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newData),
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            fetchDataFromDatabase();
+          } catch (error){
+            console.error("Error sending data:", error)
+          }
+        }
+
+        addButton.addEventListener('click', () => {
+          const date = dateInput.value;
+          const calories = parseInt(caloriesInput.value);
+          const protein = parseInt(proteinInput.value);
+          const fats = parseInt(fatsInput.value);
+          const carbs = parseInt(carbsInput.value);
+
+          if (date && !isNaN(calories) && !isNaN(protein) && !isNaN(fats)) {
+              const newData = { date, calories, protein, fats };
+              sendDataToDatabase(newData);
+              dateInput.value = '';
+              caloriesInput.value = '';
+              proteinInput.value = '';
+              fatsInput.value = '';
+          } else {
+              alert('Please fill in all fields.');
+          }
+        });
+
+        fetchDataFromDatabase();
+    </script>
+</body>
+</html> -->

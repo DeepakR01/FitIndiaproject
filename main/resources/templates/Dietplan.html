@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Plan</title>
+    <link rel="stylesheet" th:href="@{/css/styledietplan.css}"> 
+    <link rel="stylesheet" th:href="@{/css/stylenavbar.css}">
+</head>
+<body>
+
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">
+                <img th:src="@{/css/Fit_INDIA.png}" alt="FitIndia Logo"> </a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/signup}">Signup</a></li>
+            <li><a th:href="@{/calculate}">Calculate Calories</a></li>
+            <li><a th:href="@{/dietplan}">Diet Plan</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+        </ul>
+        <div class="mode-toggle">
+            <button id="dark-mode-toggle">Dark Mode</button>
+        </div>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+    <div class="container">
+    <h1>Diet Plan Generator</h1>
+
+    <form id="dietForm">
+        <label for="dietType">Diet Type</label>
+        <select id="dietType" name="dietType" required>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="non-vegetarian">Non-Vegetarian</option>
+        </select><br><br>
+
+        <label for="goal">Goal</label>
+        <select id="goal" name="goal" required>
+            <option value="lose">Lose Weight</option>
+            <option value="gain">Gain Weight</option>
+            <option value="maintain">Maintain Weight</option>
+        </select><br><br>
+
+        <button type="button" onclick="generateDietPlan()">Generate Diet Plan</button>
+    </form>
+
+    <div id="result" class="hidden">
+        <h2>Your Diet Plan:</h2>
+        <div id="dietPlan"></div> </div>
+</div>
+
+<script th:src="@{css/js/script2.js}"></script>
+<script th:src="@{css/js/script.js}"></script>
+
+</body>
+</html>

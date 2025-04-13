@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Add this link to load Font Awesome icons -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        #chat-container {
+            width: 400px;
+            height: 500px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #222;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+        .send-button {
+            padding: 10px;
+            border: none;
+            background-color: #ffcc00;
+            color: black;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+        .typing-message {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/stylenavbar.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">
+                <img th:src="@{/css/Fit_INDIA.png}" alt="FitIndia Logo"> </a>
+        </div>
+        <ul class="nav-links">
+            <li><a th:href="@{/home}">Home</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/signup}">Signup</a></li>
+            <li><a th:href="@{/caloriecalculator}">Calculate Calories</a></li>
+            <li><a th:href="@{/result}">Diet Plan</a></li>
+            <li><a th:href="@{/chat}">Chatbot</a></li>
+            <!-- <li><a th:href="@{/dietplan}">Diet Plan</a></li> -->
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+        </ul>
+        <div class="mode-toggle">
+            <button id="dark-mode-toggle">Dark Mode</button>
+        </div>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <h2>FitIndia Helpdesk <i class="fas fa-headset"></i></h2> <!-- Add the icon here -->
+    <div id="chat-container"></div>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type a message...">
+        <button class="send-button" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value;
+            if (!userInput) return;
+
+            let chatContainer = document.getElementById("chat-container");
+            chatContainer.innerHTML += `<p><b>You:</b> ${userInput}</p>`;
+
+            // Add the "Typing..." message inside chat container (only once per message)
+            let typingMessage = document.createElement("p");
+            typingMessage.classList.add("typing-message");
+            typingMessage.textContent = "Helpdesk: Typing...";
+            chatContainer.appendChild(typingMessage);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the "Typing..." message once the agent responds
+                typingMessage.remove();
+
+                // Add the actual agent response to chat
+                chatContainer.innerHTML += `<p><b>Helpdesk:</b> ${data.response}</p>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            })
+            .catch(error => {
+                // Remove typing message and show error if there's an issue
+                typingMessage.remove();
+                chatContainer.innerHTML += `<p><b>Helpdesk:</b> Something went wrong. Please try again.</p>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+
+            // Clear the user input field after sending the message
+            document.getElementById("user-input").value = "";
+        }
+    </script>
+    <script th:src="@{css/js/script2.js}"></script>
+    <script th:src="@{css/js/script.js}"></script>
+</body>
+</html>

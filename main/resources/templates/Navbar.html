@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitIndia</title>
+    <link rel="stylesheet" th:href="@{/css/stylenavbar.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img th:src="@{/css/cover.png}" alt="FitIndia Logo"> </a>
+
+        </div>
+        <ul class="nav-links">
+            <li><a href="http://localhost:8081/home">Home</a></li>
+            <li><a href="http://localhost:8081/caloriecalculator">Calculate Calories</a></li>
+            <li><a href="http://127.0.0.1:8081/">Image</a></li>
+            <li><a href="http://127.0.0.1:5000/">Image Calories</a></li>
+            <li><a href="http://127.0.0.1:5002/">Diet Plan</a></li>
+            <li><a href="http://127.0.0.1:5001/">Chatbot</a></li>
+            <li><a href="http://localhost:8081/dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+
+
+    <script th:src="@{css/js/script.js}"></script>
+</body>
+</html>
