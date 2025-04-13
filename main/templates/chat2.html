@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Add this link to load Font Awesome icons -->
+    <style>
+        /* style.css */
+body {
+  font-family: sans-serif;
+  position:relative;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space logo and links */
+  align-items: center;
+  position: center;
+  padding: 1rem;
+  background-color: lightblue; /* Light mode background */
+  color: black; /* Light mode text */
+}
+
+.logo img {
+  transform: scale(3); /* Adjust size as needed */
+  height: 30px; /* Adjust as needed */
+  /* width: 150px; Adjust as needed */
+  margin-left: 5px;
+  padding-left: 15px;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black; /* Light mode link color */
+  padding: 10px; /* Add some padding around links *5
+  border-radius: 5px; /* Optional: Add rounded corners */
+  transition: color 0.3s ease; /* Smooth transition for link color */
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Example hover color */
+}
+
+
+.mode-toggle {
+  margin-left: 20px; /* Space from nav links */
+}
+
+.mode-toggle button {
+  padding: 8px 16px;
+  background-color: #007bff; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for button color */
+}
+
+.mode-toggle button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .nav-links {
+      position: relative;
+      top: 80px; /* Adjust as needed */
+      left: 0;
+      width: 100%;
+      background-color: #f0f0f0; /* Light mode background */
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-100%); /* Hide initially */
+      transition: transform 0.3s ease;
+      z-index: 100; /* Ensure it's above other content */
+  }
+
+  body.dark-mode .nav-links {
+      background-color: #222; /* Dark mode background */
+  }
+
+  .nav-links li {
+      margin: 10px 0;
+  }
+
+  .nav-links.active {
+      transform: translateY(0); /* Show when active */
+  }
+
+  .burger {
+      display: block;
+  }
+
+  .burger.toggle .line1 {
+      transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .burger.toggle .line2 {
+      opacity: 0;
+  }
+
+  .burger.toggle .line3 {
+      transform: rotate(-45deg) translate(5px, -5px);
+  }
+}
+        #mode-toggle {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        #chat-container {
+            width: 400px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: whitesmoke;
+        }
+        .input-container {
+            display: flex;
+            align-items: stretch;
+            margin-top: 10px;
+        }
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: whitesmoke;
+            color: black;
+        }
+        .send-button {
+            padding: 10px;
+            border: none;
+            background-color: lightblue;
+            color: black;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+        .typing-message {
+            color: #888;
+            font-style: italic;
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/stylenavbar.css}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+            <img src="/static/cover.png" alt="FitIndia Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="http://localhost:8083/home">Home</a></li>
+        <li><a href="http://localhost:8083/caloriecalculator">Calculate Calories</a></li>
+        <li><a href="http://127.0.0.1:8081/">Image</a></li>
+        <li><a href="http://127.0.0.1:5000/">Image Calories</a></li>
+        <li><a href="http://127.0.0.1:5000/">Diet Plan</a></li>
+        <li><a href="http://127.0.0.1:5001/">Chatbot</a></li>
+        <li><a href="http://localhost:8083/dashboard">Dashboard</a></li>
+    </ul>
+</nav>
+<div id="mode-toggle">
+    <h2>FitIndia Helpdesk <i class="fas fa-headset"></i></h2> <!-- Add the icon here -->
+    <div id="chat-container"></div>
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Type a message...">
+        <button class="send-button" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+    <script>
+        function sendMessage() {
+            let userInput = document.getElementById("user-input").value;
+            if (!userInput) return;
+
+            let chatContainer = document.getElementById("chat-container");
+            chatContainer.innerHTML += `<p><b>You:</b> ${userInput}</p>`;
+
+            // Add the "Typing..." message inside chat container (only once per message)
+            let typingMessage = document.createElement("p");
+            typingMessage.classList.add("typing-message");
+            typingMessage.textContent = "Helpdesk: Typing...";
+            chatContainer.appendChild(typingMessage);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Scroll to the bottom
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the "Typing..." message once the agent responds
+                typingMessage.remove();
+
+                // Add the actual agent response to chat
+                chatContainer.innerHTML += `<p><b>Helpdesk:</b> ${data.response}</p>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            })
+            .catch(error => {
+                // Remove typing message and show error if there's an issue
+                typingMessage.remove();
+                chatContainer.innerHTML += `<p><b>Helpdesk:</b> Something went wrong. Please try again.</p>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+
+            // Clear the user input field after sending the message
+            document.getElementById("user-input").value = "";
+        }
+    </script>
+    <script th:src="@{css/js/script2.js}"></script>
+    <script th:src="@{css/js/script.js}"></script>
+</body>
+</html>

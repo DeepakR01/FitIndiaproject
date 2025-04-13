@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet Recommendation Generator</title>
+  <!-- <link rel="stylesheet" th:href="@{/css/stylenavbar.css}"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <link rel="stylesheet" href="css\stylenavbar.css">
+
+  <style>
+    /* style.css */
+body {
+  font-family: sans-serif;
+  position:relative;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; /* Space logo and links */
+  align-items: center;
+  position: center;
+  padding: 1rem;
+  background-color: lightblue; /* Light mode background */
+  color: black; /* Light mode text */
+}
+
+.logo img {
+  transform: scale(3); /* Adjust size as needed */
+  height: 30px; /* Adjust as needed */
+  /* width: 150px; Adjust as needed */
+  margin-left: 5px;
+  padding-left: 15px;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black; /* Light mode link color */
+  padding: 10px; /* Add some padding around links *5
+  border-radius: 5px; /* Optional: Add rounded corners */
+  transition: color 0.3s ease; /* Smooth transition for link color */
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Example hover color */
+}
+
+.mode-toggle {
+  margin-left: 20px; /* Space from nav links */
+}
+
+.mode-toggle button {
+  padding: 8px 16px;
+  background-color: #007bff; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for button color */
+}
+
+.mode-toggle button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .nav-links {
+      position: relative;
+      top: 80px; /* Adjust as needed */
+      left: 0;
+      width: 100%;
+      background-color: #f0f0f0; /* Light mode background */
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(-100%); /* Hide initially */
+      transition: transform 0.3s ease;
+      z-index: 100; /* Ensure it's above other content */
+  }
+
+  body.dark-mode .nav-links {
+      background-color: #222; /* Dark mode background */
+  }
+
+  .nav-links li {
+      margin: 10px 0;
+  }
+
+  .nav-links.active {
+      transform: translateY(0); /* Show when active */
+  }
+
+  .burger {
+      display: block;
+  }
+
+  .burger.toggle .line1 {
+      transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .burger.toggle .line2 {
+      opacity: 0;
+  }
+
+  .burger.toggle .line3 {
+      transform: rotate(-45deg) translate(5px, -5px);
+  }
+}
+    body {
+      font-family: Arial, sans-serif;
+      /* margin-left: 50%; */
+      padding: 0;
+      background-color: #f9f9f9;
+      /* display: flex; */
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+      margin-left: 30%;
+      margin-top: 3%;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .response {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #f1f1f1;
+      color: #333;
+      white-space: pre-wrap; /* Maintain formatting for multiline text */
+      font-size: 15px;
+      line-height: 1.5;
+      display: none; /* Hide initially */
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+            <img src="/static/cover.png" alt="FitIndia Logo">
+    </div>
+    <ul class="nav-links">
+      <li><a href="http://localhost:8083/home">Home</a></li>
+      <li><a href="http://localhost:8083/caloriecalculator">Calculate Calories</a></li>
+      <li><a href="http://127.0.0.1:8083/">Image</a></li>
+      <li><a href="http://127.0.0.1:5000/">Image Calories</a></li>
+      <li><a href="http://127.0.0.1:5002/">Diet Plan</a></li>
+      <li><a href="http://127.0.0.1:5001/">Chatbot</a></li>
+      <li><a href="http://localhost:8083/dashboard">Dashboard</a></li>
+  </ul>
+</nav>
+  <div class="container">
+    <h1>Diet Recommendation Generator</h1>
+    
+    <label for="height">Height (in cm):</label>
+    <input type="number" id="height" placeholder="Enter your height" required>
+
+    <label for="weight">Weight (in kg):</label>
+    <input type="number" id="weight" placeholder="Enter your weight" required>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" placeholder="Enter your age" required>
+
+    <label for="goal">Goal:</label>
+    <select id="goal">
+      <option value="weight loss">Weight Loss</option>
+      <option value="muscle gain">Muscle Gain</option>
+      <option value="maintain">Maintain</option>
+    </select>
+
+    <label for="diet_type">Diet Type:</label>
+    <select id="diet_type">
+      <option value="veg">Veg</option>
+      <option value="non-veg">Non-Veg</option>
+    </select>
+
+    <label for="activity_level">Activity Level:</label>
+    <select id="activity_level">
+      <option value="low">Low</option>
+      <option value="moderate">Moderate</option>
+      <option value="high">High</option>
+    </select>
+
+    <button type="button" class="btn btn-info" onclick="generateDiet()">Generate Diet</button>
+
+    <div id="response" class="response"></div>
+  </div>
+
+  <script>
+    async function generateDiet() {
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const age = document.getElementById('age').value;
+      const goal = document.getElementById('goal').value;
+      const dietType = document.getElementById('diet_type').value;
+      const activityLevel = document.getElementById('activity_level').value;
+
+      // Ensure all required fields are filled before submitting
+      if (!height || !weight || !age) {
+        return; // Simply return if data is missing, do nothing (no alerts or prompts)
+      }
+
+      const responseDiv = document.getElementById('response');
+      responseDiv.style.display = 'none';  // Hide the response div before the request
+
+      try {
+        const response = await fetch('/diet-recommendation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            height: height,
+            weight: weight,
+            age: age,
+            goal: goal,
+            diet_type: dietType,
+            activity_level: activityLevel
+          }),
+        });
+
+        const data = await response.json();
+
+        // Display the response after receiving the data
+        responseDiv.style.display = 'block';
+        responseDiv.innerHTML = data.response;  // Use HTML for proper formatting
+      } catch (error) {
+        // Hide the response and make sure no message is shown to the user
+        responseDiv.style.display = 'none';  // Keep hidden if there's an error
+      }
+    }
+  </script>
+    <script th:src="@{css/js/script.js}"></script>
+
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet Recommendation Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .response {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #f1f1f1;
+      color: #333;
+      white-space: pre-wrap; /* Maintain formatting for multiline text */
+      font-size: 14px;
+      line-height: 1.5;
+      display: none; /* Hide initially */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Diet Recommendation Generator</h1>
+    
+    <label for="height">Height (in cm):</label>
+    <input type="number" id="height" placeholder="Enter your height" required>
+
+    <label for="weight">Weight (in kg):</label>
+    <input type="number" id="weight" placeholder="Enter your weight" required>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" placeholder="Enter your age" required>
+
+    <label for="goal">Goal:</label>
+    <select id="goal">
+      <option value="weight loss">Weight Loss</option>
+      <option value="muscle gain">Muscle Gain</option>
+      <option value="maintain">Maintain</option>
+    </select>
+
+    <label for="diet_type">Diet Type:</label>
+    <select id="diet_type">
+      <option value="veg">Veg</option>
+      <option value="non-veg">Non-Veg</option>
+    </select>
+
+    <label for="activity_level">Activity Level:</label>
+    <select id="activity_level">
+      <option value="low">Low</option>
+      <option value="moderate">Moderate</option>
+      <option value="high">High</option>
+    </select>
+
+    <button onclick="generateDiet()">Generate Diet</button>
+
+    <div id="response" class="response"></div>
+  </div>
+
+  <script>
+    async function generateDiet() {
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const age = document.getElementById('age').value;
+      const goal = document.getElementById('goal').value;
+      const dietType = document.getElementById('diet_type').value;
+      const activityLevel = document.getElementById('activity_level').value;
+
+      // Ensure all required fields are filled before submitting
+      if (!height || !weight || !age) {
+        return; // Simply return if data is missing, do nothing (no alerts or prompts)
+      }
+
+      const responseDiv = document.getElementById('response');
+      responseDiv.style.display = 'none';  // Hide the response div before the request
+
+      try {
+        const response = await fetch('/diet-recommendation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            height: height,
+            weight: weight,
+            age: age,
+            goal: goal,
+            diet_type: dietType,
+            activity_level: activityLevel
+          }),
+        });
+
+        const data = await response.json();
+
+        // Display the response after receiving the data
+        responseDiv.style.display = 'block';
+        responseDiv.innerHTML = data.response;  // Use HTML for proper formatting
+      } catch (error) {
+        // Hide the response and make sure no message is shown to the user
+        responseDiv.style.display = 'none';  // Keep hidden if there's an error
+      }
+    }
+  </script>
+</body>
+</html> -->
